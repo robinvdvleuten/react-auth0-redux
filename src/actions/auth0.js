@@ -1,0 +1,81 @@
+import Auth0 from 'auth0-js';
+
+const auth0 = new Auth0({
+  domain: process.env.AUTH0_DOMAIN,
+  clientID: process.env.AUTH0_CLIENT_ID,
+  callbackOnLocationHash: true
+});
+
+export const login = (options) => (
+  (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+      auth0.login(options, (err, result) => {
+        if (err) {
+          dispatch({ type: 'AUTH0_LOGIN_FAILURE', error: err.message });
+          return reject(err);
+        }
+
+        // @TODO Do we need to move this to the reducer?
+        localStorage.setItem('id_token', result.idToken);
+
+        dispatch({ type: 'AUTH0_LOGIN_SUCCESS', idToken: result.idToken });
+        resolve();
+      });
+    });
+  }
+);
+
+export const logout = () => (
+  (dispatch, getState) => {
+    localStorage.removeItem('id_token');
+
+    dispatch({ type: 'AUTH0_LOGOUT_SUCCESS' });
+    return Promise.resolve();
+  }
+);
+
+export const parseHash = (hash) => (
+  (dispatch, getState) => {
+    const result = auth0.parseHash(hash);
+
+    if (!result) {
+      return Promise.reject();
+    }
+
+    if (result.error) {
+      dispatch({ type: 'AUTH0_LOGIN_FAILURE', error: result.error });
+      return Promise.reject(result.error);
+    }
+
+    // @TODO Do we need to move this to the reducer?
+    localStorage.setItem('id_token', result.idToken);
+
+    dispatch({ type: 'AUTH0_LOGIN_SUCCESS', idToken: result.idToken });
+    return Promise.resolve();
+  }
+);
+
+export const getProfile = () => (
+  (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+      const state = getState();
+
+      if (state.user.profile) {
+        // Do not load profile if it already exists in state.
+        return resolve();
+      }
+
+      dispatch({ type: 'AUTH0_GET_PROFILE_REQUEST' });
+
+      auth0.getProfile(state.user.idToken, (err, profile) => {
+        if (err) {
+          dispatch({ type: 'AUTH0_GET_PROFILE_FAILURE', error: err });
+          return reject(err);
+        }
+
+        dispatch({ type: 'AUTH0_GET_PROFILE_SUCCESS', profile });
+        return resolve();
+      });
+    });
+  }
+)
