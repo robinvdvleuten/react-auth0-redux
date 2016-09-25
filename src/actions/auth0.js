@@ -15,9 +15,6 @@ export const login = (options) => (
           return reject(err);
         }
 
-        // @TODO Do we need to move this to the reducer?
-        localStorage.setItem('id_token', result.idToken);
-
         dispatch({ type: 'AUTH0_LOGIN_SUCCESS', idToken: result.idToken });
         resolve();
       });
@@ -27,8 +24,6 @@ export const login = (options) => (
 
 export const logout = () => (
   (dispatch, getState) => {
-    localStorage.removeItem('id_token');
-
     dispatch({ type: 'AUTH0_LOGOUT_SUCCESS' });
     return Promise.resolve();
   }
@@ -46,9 +41,6 @@ export const parseHash = (hash) => (
       dispatch({ type: 'AUTH0_LOGIN_FAILURE', error: result.error });
       return Promise.reject(result.error);
     }
-
-    // @TODO Do we need to move this to the reducer?
-    localStorage.setItem('id_token', result.idToken);
 
     dispatch({ type: 'AUTH0_LOGIN_SUCCESS', idToken: result.idToken });
     return Promise.resolve();

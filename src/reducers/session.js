@@ -8,20 +8,20 @@ const initialState = {
 export default function session (state = initialState, action) {
   switch (action.type) {
     case 'AUTH0_LOGIN_SUCCESS':
-      return { ...state, idToken: action.idToken, isAuthenticated: true, error: null };
+      return { ...state, idToken: action.idToken, error: null };
 
     case 'AUTH0_LOGIN_FAILURE':
-      return { ...state, idToken: null, isAuthenticated: false, error: action.err.message };
+      return { ...state, idToken: null, error: action.err.message };
 
     case 'AUTH0_LOGOUT_SUCCESS':
-      return { ...state, idToken: null, isAuthenticated: false, error: null };
+      return { ...state, idToken: null, error: null };
 
     case 'AUTH0_GET_PROFILE_FAILURE':
       if (action.err.error !== 401) {
         return state;
       }
 
-      return { ...state, idToken: null, isAuthenticated: false, error: null };
+      return { ...state, idToken: null, error: null };
 
     default:
       return state;
