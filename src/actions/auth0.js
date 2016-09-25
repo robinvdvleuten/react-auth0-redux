@@ -11,7 +11,7 @@ export const login = (options) => (
     return new Promise((resolve, reject) => {
       auth0.login(options, (err, result) => {
         if (err) {
-          dispatch({ type: 'AUTH0_LOGIN_FAILURE', error: err.message });
+          dispatch({ type: 'AUTH0_LOGIN_FAILURE', err });
           return reject(err);
         }
 
@@ -24,7 +24,7 @@ export const login = (options) => (
 
 export const logout = () => (
   (dispatch, getState) => {
-    dispatch({ type: 'AUTH0_LOGOUT_SUCCESS' });
+    dispatch({ type: 'AUTH0_LOGOUT' });
     return Promise.resolve();
   }
 );
@@ -38,7 +38,7 @@ export const parseHash = (hash) => (
     }
 
     if (result.error) {
-      dispatch({ type: 'AUTH0_LOGIN_FAILURE', error: result.error });
+      dispatch({ type: 'AUTH0_LOGIN_FAILURE', err: result.error });
       return Promise.reject(result.error);
     }
 
@@ -61,7 +61,7 @@ export const getProfile = () => (
 
       auth0.getProfile(state.session.idToken, (err, profile) => {
         if (err) {
-          dispatch({ type: 'AUTH0_GET_PROFILE_FAILURE', error: err });
+          dispatch({ type: 'AUTH0_GET_PROFILE_FAILURE', err });
           return reject(err);
         }
 

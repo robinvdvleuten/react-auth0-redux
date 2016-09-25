@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
+import { Link, withRouter } from 'react-router';
 import { logout } from '../actions/auth0';
 import { isAuthenticated } from '../reducers/session';
 
@@ -12,19 +12,12 @@ class Application extends Component {
     }
   }
 
-  logout() {
-    this.props.logout()
-      .then(() => {
-        this.props.router.push('/login');
-      });
-  }
-
   render() {
     return (
       <div>
         {this.props.isAuthenticated && (
           <div>
-            <button onClick={this.logout.bind(this)}>Logout</button>
+            <Link to="/logout">Logout</Link>
           </div>
         )}
 

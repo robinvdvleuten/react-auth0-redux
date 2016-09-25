@@ -13,7 +13,7 @@ export default function session (state = initialState, action) {
     case 'AUTH0_LOGIN_FAILURE':
       return { ...state, idToken: null, error: action.err.message };
 
-    case 'AUTH0_LOGOUT_SUCCESS':
+    case 'AUTH0_LOGOUT':
       return { ...state, idToken: null, error: null };
 
     case 'AUTH0_GET_PROFILE_FAILURE':

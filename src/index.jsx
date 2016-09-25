@@ -3,6 +3,7 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { browserHistory, Router, Route } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
+import { logout } from './actions/auth0';
 import Application from './containers/Application';
 import Dashboard from './containers/Dashboard';
 import Login from './containers/Login';
@@ -12,18 +13,28 @@ import configureStore from './store/configureStore';
 const store = configureStore();
 const history = syncHistoryWithStore(browserHistory, store);
 
-function requireAuth(store) {
-  return (nextState, replace) => {
-    const state = store.getState();
+function forceLogout(nextState, replace, next) {
+  store.dispatch(logout()).then(() => {
+    replace('/login');
+    next();
+  });
+}
 
-    // @TODO Logout when token is expired
-    if (!isAuthenticated(state.session) || isTokenExpired(state.session)) {
+function requireAuth(nextState, replace, next) {
+  const state = store.getState();
+
+  if (!isAuthenticated(state.session) || isTokenExpired(state.session)) {
+    return store.dispatch(logout()).then(() => {
       replace({
         pathname: '/login',
         state: { nextPathname: nextState.location.pathname }
       });
-    }
+
+      next();
+    });
   }
+
+  next();
 }
 
 render(
@@ -32,8 +43,9 @@ render(
       <Route component={Application}>
         <Route path="/login" component={Login} />
 
-        <Route onEnter={requireAuth(store)}>
+        <Route onEnter={requireAuth}>
           <Route path="/" component={Dashboard} />
+          <Route path="/logout" onEnter={forceLogout} />
         </Route>
       </Route>
     </Router>

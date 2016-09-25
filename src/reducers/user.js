@@ -13,7 +13,7 @@ const session = (state = initialState, action) => {
       return { ...state, isLoadingProfile: true, profile: null };
 
     case 'AUTH0_GET_PROFILE_FAILURE':
-      return { ...state, error: action.error }
+      return { ...state, error: action.err };
 
     case 'AUTH0_GET_PROFILE_SUCCESS':
       return { ...state, isLoadingProfile: false, profile: action.profile };
