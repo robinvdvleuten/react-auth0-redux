@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { logout } from '../actions/auth0';
+import { isAuthenticated } from '../reducers/session';
 
 class Application extends Component {
   componentWillReceiveProps(nextProps) {
@@ -40,7 +41,7 @@ Application.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    isAuthenticated: state.user.isAuthenticated,
+    isAuthenticated: isAuthenticated(state.session),
   };
 };
 

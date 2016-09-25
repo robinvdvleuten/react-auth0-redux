@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "auth0-js": "^7.1.0",
+    "jwt-decode": "^2.1.0",
     "react": "^15.3.0",
     "react-dom": "^15.3.0",
     "react-redux": "^4.4.5",

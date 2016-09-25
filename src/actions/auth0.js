@@ -67,7 +67,7 @@ export const getProfile = () => (
 
       dispatch({ type: 'AUTH0_GET_PROFILE_REQUEST' });
 
-      auth0.getProfile(state.user.idToken, (err, profile) => {
+      auth0.getProfile(state.session.idToken, (err, profile) => {
         if (err) {
           dispatch({ type: 'AUTH0_GET_PROFILE_FAILURE', error: err });
           return reject(err);

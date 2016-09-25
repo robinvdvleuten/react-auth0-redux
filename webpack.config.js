@@ -31,7 +31,7 @@ const config = module.exports = {
   ],
 
   resolve: {
-    extensions: ['', '.js', '.json', '.jsx'],
+    extensions: ['.js', '.json', '.jsx'],
   },
 
   devServer: {

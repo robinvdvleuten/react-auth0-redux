@@ -4,9 +4,9 @@ import { Provider } from 'react-redux';
 import { browserHistory, Router, Route } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import Application from './containers/Application';
-import DashboardView from './views/DashboardView';
-import LoginView from './views/LoginView';
-import rootReducer from './reducers'
+import DashboardView from './containers/DashboardView';
+import LoginView from './containers/LoginView';
+import { isAuthenticated, isTokenExpired } from './reducers/session';
 import configureStore from './store/configureStore';
 
 const store = configureStore();
@@ -16,8 +16,8 @@ function requireAuth(store) {
   return (nextState, replace) => {
     const state = store.getState();
 
-    // @TODO Validate expiration of id token...
-    if (!state.user.isAuthenticated) {
+    // @TODO Logout when token is expired
+    if (!isAuthenticated(state.session) || isTokenExpired(state.session)) {
       replace({
         pathname: '/login',
         state: { nextPathname: nextState.location.pathname }
