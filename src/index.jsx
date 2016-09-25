@@ -4,8 +4,8 @@ import { Provider } from 'react-redux';
 import { browserHistory, Router, Route } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import Application from './containers/Application';
-import DashboardView from './containers/DashboardView';
-import LoginView from './containers/LoginView';
+import Dashboard from './containers/Dashboard';
+import Login from './containers/Login';
 import { isAuthenticated, isTokenExpired } from './reducers/session';
 import configureStore from './store/configureStore';
 
@@ -30,10 +30,10 @@ render(
   <Provider store={store}>
     <Router history={browserHistory}>
       <Route component={Application}>
-        <Route path="/login" component={LoginView} />
+        <Route path="/login" component={Login} />
 
         <Route onEnter={requireAuth(store)}>
-          <Route path="/" component={DashboardView} />
+          <Route path="/" component={Dashboard} />
         </Route>
       </Route>
     </Router>
