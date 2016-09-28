@@ -1,10 +1,4 @@
-import Auth0 from 'auth0-js';
-
-const auth0 = new Auth0({
-  domain: process.env.REACT_APP_AUTH0_DOMAIN,
-  clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
-  callbackOnLocationHash: true
-});
+import auth0 from '../services/auth0';
 
 export const login = (options) => (
   (dispatch, getState) => {

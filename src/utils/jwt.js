@@ -1,10 +1,10 @@
-import decode from 'jwt-decode';
+import auth0 from '../services/auth0';
 
 export const getTokenExpirationDate = (token) => {
-  const decoded = decode(token)
+  const decoded = auth0.decodeJwt(token);
 
-  if(!decoded.exp) {
-    return null
+  if (!decoded.exp) {
+    return null;
   }
 
   // The 0 here is the key, which sets the date to the epoch.

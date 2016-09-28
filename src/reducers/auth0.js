@@ -31,6 +31,10 @@ export default function auth0 (state = initialState, action) {
 export const isAuthenticated = (state) => state.idToken !== null;
 
 export const isTokenExpired = (state) => {
+  if (!state.idToken) {
+    return true;
+  }
+
   const date = getTokenExpirationDate(state.idToken);
   const offsetSeconds = 0;
 
