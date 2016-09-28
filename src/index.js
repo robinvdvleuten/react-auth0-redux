@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { browserHistory, Router, Route } from 'react-router';
@@ -39,7 +39,7 @@ function requireAuth(nextState, replace, next) {
 
 render(
   <Provider store={store}>
-    <Router history={browserHistory}>
+    <Router history={history}>
       <Route component={Application}>
         <Route path="/login" component={Login} />
 
