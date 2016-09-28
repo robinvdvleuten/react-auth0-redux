@@ -29,7 +29,7 @@ DashboardView.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    profile: state.user.profile,
+    profile: state.auth0.profile,
   };
 };
 

@@ -46,7 +46,7 @@ export const getProfile = () => (
     return new Promise((resolve, reject) => {
       const state = getState();
 
-      if (state.user.profile) {
+      if (state.auth0.profile) {
         // Do not load profile if it already exists in state.
         return resolve();
       }

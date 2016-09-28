@@ -3,6 +3,8 @@ import { getTokenExpirationDate } from '../utils/jwt';
 const initialState = {
   error: null,
   idToken: null,
+  isLoadingProfile: false,
+  profile: null,
 };
 
 export default function auth0 (state = initialState, action) {
@@ -14,7 +16,10 @@ export default function auth0 (state = initialState, action) {
       return { ...state, idToken: null, error: action.err.message };
 
     case 'AUTH0_LOGOUT':
-      return { ...state, idToken: null, error: null };
+      return { ...state, idToken: null, error: null, profile: null };
+
+    case 'AUTH0_GET_PROFILE_REQUEST':
+      return { ...state, isLoadingProfile: true, profile: null };
 
     case 'AUTH0_GET_PROFILE_FAILURE':
       if (action.err.error !== 401) {
@@ -22,6 +27,9 @@ export default function auth0 (state = initialState, action) {
       }
 
       return { ...state, idToken: null, error: null };
+
+    case 'AUTH0_GET_PROFILE_SUCCESS':
+      return { ...state, isLoadingProfile: false, profile: action.profile };
 
     default:
       return state;
