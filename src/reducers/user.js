@@ -4,7 +4,7 @@ const initialState = {
   profile: null,
 };
 
-const session = (state = initialState, action) => {
+export default function user (state = initialState, action) {
   switch (action.type) {
     case 'AUTH0_LOGOUT_SUCCESS':
       return { ...state, idToken: null, error: null, profile: null };
@@ -22,5 +22,3 @@ const session = (state = initialState, action) => {
       return state;
   }
 }
-
-export default session;

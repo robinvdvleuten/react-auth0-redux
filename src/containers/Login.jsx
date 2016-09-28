@@ -3,7 +3,7 @@ import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import Auth0 from 'auth0-js';
 import { login, parseHash } from '../actions/auth0';
-import { isAuthenticated } from '../reducers/session';
+import { isAuthenticated } from '../reducers/auth0';
 
 const auth0 = new Auth0({
   domain: process.env.AUTH0_DOMAIN,
@@ -123,8 +123,8 @@ LoginView.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    isAuthenticated: isAuthenticated(state.session),
-    error: state.session.error,
+    isAuthenticated: isAuthenticated(state.auth0),
+    error: state.auth0.error,
   };
 };
 

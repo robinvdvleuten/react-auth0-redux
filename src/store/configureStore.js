@@ -7,7 +7,7 @@ import rootReducer from '../reducers';
 export default function configureStore() {
   const store = createStore(rootReducer, compose(
     applyMiddleware(thunk),
-    persistState(['session.idToken'], {
+    persistState(['auth0.idToken'], {
       slicer: (paths) => (state) => (
         paths.reduce((substate, path) => {
           objectPath.set(substate, path, objectPath.get(state, path));

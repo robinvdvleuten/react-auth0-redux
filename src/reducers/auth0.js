@@ -5,7 +5,7 @@ const initialState = {
   idToken: null,
 };
 
-export default function session (state = initialState, action) {
+export default function auth0 (state = initialState, action) {
   switch (action.type) {
     case 'AUTH0_LOGIN_SUCCESS':
       return { ...state, idToken: action.idToken, error: null };
