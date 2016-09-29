@@ -1,18 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { getProfile } from '../actions/auth0';
 
 class DashboardView extends Component {
-  componentDidMount() {
-    this.props.getProfile();
-  }
-
   render() {
     const { profile } = this.props;
-
-    if (!profile) {
-      return (<div>Loading your profile...</div>);
-    }
 
     return (
       <div>
@@ -23,17 +14,13 @@ class DashboardView extends Component {
 }
 
 DashboardView.propTypes = {
-  profile: PropTypes.object,
-  getProfile: PropTypes.func.isRequired,
+  profile: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = (state) => {
-  return {
-    profile: state.auth0.profile,
-  };
-};
+const mapStateToProps = (state) => ({
+  profile: state.auth0.profile,
+});
 
 export default connect(
-  mapStateToProps,
-  { getProfile }
+  mapStateToProps
 )(DashboardView);

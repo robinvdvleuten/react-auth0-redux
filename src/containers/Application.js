@@ -1,26 +1,31 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router';
-import { logout } from '../actions/auth0';
+import { Link, routerShape, withRouter } from 'react-router';
+import { getProfile, logout } from '../actions/auth0';
 import { isAuthenticated } from '../reducers/auth0';
 
 class Application extends Component {
-  componentWillReceiveProps(nextProps) {
-    if (this.props.isAuthenticated && !nextProps.isAuthenticated) {
-      // User's authentication changed, so redirect to login form.
-      this.props.router.push('/login');
-    }
+  componentDidMount() {
+    this.props.getProfile().catch(err => {
+      if (err.error < 400 || err.error > 403) {
+        return;
+      }
+
+      this.props.logout()
+        .then(() => this.props.router.push('/login'));
+    });
   }
 
   render() {
+    if (!this.props.profile) {
+      return (<div>Loading your profile...</div>);
+    }
+
     return (
       <div>
-        {this.props.isAuthenticated && (
-          <div>
-            <Link to="/logout">Logout</Link>
-          </div>
-        )}
-
+        <div>
+          <Link to="/logout">Logout</Link>
+        </div>
         {this.props.children}
       </div>
     );
@@ -29,16 +34,18 @@ class Application extends Component {
 
 Application.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
+  getProfile: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
+  profile: PropTypes.object,
+  router: routerShape.isRequired,
 };
 
-const mapStateToProps = (state) => {
-  return {
-    isAuthenticated: isAuthenticated(state.auth0),
-  };
-};
+const mapStateToProps = (state) => ({
+  isAuthenticated: isAuthenticated(state.auth0),
+  profile: state.auth0.profile,
+});
 
 export default connect(
   mapStateToProps,
-  { logout }
+  { getProfile, logout }
 )(withRouter(Application));

@@ -21,11 +21,7 @@ export default function auth0 (state = initialState, action) {
       return { ...state, profile: null };
 
     case 'AUTH0_GET_PROFILE_FAILURE':
-      if (action.err.error !== 401) {
-        return state;
-      }
-
-      return { ...state, idToken: null, error: null };
+      return { ...state, error: action.err };
 
     case 'AUTH0_GET_PROFILE_SUCCESS':
       return { ...state, profile: action.profile };

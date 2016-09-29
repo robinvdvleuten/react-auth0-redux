@@ -32,10 +32,9 @@ export default function createRoutes(store) {
   };
 
   return (
-    <Route component={Application}>
+    <Route>
       <Route path="/login" component={Login} />
-
-      <Route onEnter={requireAuth}>
+      <Route component={Application} onEnter={requireAuth}>
         <Route path="/" component={Dashboard} />
         <Route path="/logout" onEnter={forceLogout} />
       </Route>
